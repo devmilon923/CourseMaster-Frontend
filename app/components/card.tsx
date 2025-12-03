@@ -1,9 +1,11 @@
 "use client";
 import { Button } from "antd";
 import { ArrowRight, Layers, Tag, Users } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Card({ course }: { course: any }) {
+  const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
   return (
     <div
       key={course._id}
@@ -11,8 +13,10 @@ export default function Card({ course }: { course: any }) {
     >
       {/* Image Area */}
       <div className="relative h-56 overflow-hidden bg-gray-100">
-        <img
-          src={course.image}
+        <Image
+          width={100}
+          height={100}
+          src={imageBase + course.image}
           alt={course.name}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
         />
@@ -65,7 +69,7 @@ export default function Card({ course }: { course: any }) {
             </span>
           </div>
 
-          <Link href={"/course"}>
+          <Link href={`/course/${course._id}`}>
             <Button
               type="text"
               className="text-gray-900 font-semibold hover:text-red-600 hover:bg-red-50 px-4 flex items-center gap-2 group/btn transition-all"

@@ -11,47 +11,11 @@ import {
   Tag,
 } from "lucide-react";
 import Card from "./components/card";
+import CardSection from "./components/cardSection";
+import Link from "next/link";
 
 export default function Home() {
   // API Response Data for Courses Section
-  const coursesFromApi = [
-    {
-      _id: "692ed853ec5dfabeed1560ec",
-      instructor: "Kamal Mia",
-      category: "Web Development",
-      name: "Build your career with web development",
-      price: 6000,
-      image:
-        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
-      createdAt: "2025-12-02T12:15:14.430Z",
-      totalEnroll: 154,
-      totalModule: 24,
-    },
-    {
-      _id: "692ed853ec5dfabeed1560edb",
-      instructor: "Sarah Rahman",
-      category: "Digital Marketing",
-      name: "Complete Digital Marketing Guideline",
-      price: 4500,
-      image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-      createdAt: "2025-11-10T12:15:14.430Z",
-      totalEnroll: 89,
-      totalModule: 12,
-    },
-    {
-      _id: "692ed853ec5dfabeed1560ee",
-      instructor: "John Smith",
-      category: "Graphic Design",
-      name: "Professional Graphic Design Masterclass",
-      price: 5000,
-      image:
-        "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?w=600&h=400&fit=crop",
-      createdAt: "2025-10-05T12:15:14.430Z",
-      totalEnroll: 210,
-      totalModule: 35,
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-red-100 selection:text-red-900">
@@ -229,19 +193,17 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {coursesFromApi.map((course) => (
-              <Card key={course._id} course={course} />
-            ))}
-          </div>
+          <CardSection limit={3} />
 
           <div className="text-center mt-16">
-            <Button
-              size="large"
-              className="px-8 h-12 border-gray-300 text-gray-600 hover:text-gray-900! hover:border-gray-900! transition-all"
-            >
-              View All Courses
-            </Button>
+            <Link href={"/course"}>
+              <Button
+                size="large"
+                className="px-8 h-12 border-gray-300 text-gray-600 hover:text-gray-900! hover:border-gray-900! transition-all"
+              >
+                View All Courses
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
