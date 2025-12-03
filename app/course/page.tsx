@@ -35,7 +35,7 @@ export default function Page() {
     page,
     limit,
     searchQ,
-    category,
+    category: category as "Web Development" | "Graphic Design & Illustration" | "Marketing & Sales" | "Communication Skills" | "",
     sort: sort as "high" | "low" | "",
   });
 
