@@ -42,8 +42,7 @@ export default function Login() {
             "video",
           ])
         );
-        return;
-        // return route.push("/auth/login");
+        return route.push("/dashboard");
       }
     } catch (error: any) {
       return message.error(error.data.message || "Unknown error");
