@@ -3,10 +3,12 @@ import { Button } from "antd";
 import { BookOpen, Menu } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const user = useSelector((state: any) => state.userSlice.user);
+  console.log(user);
   return (
     <nav className="fixed w-full bg-white/90 backdrop-blur-xl border-b border-gray-100 z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

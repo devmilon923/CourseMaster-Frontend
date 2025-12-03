@@ -1,14 +1,21 @@
 "use client";
+import { baseApi } from "@/app/redux/api/baseApi";
+import { useLoginMutation } from "@/app/redux/api/call/authApi";
+import { setToken, setUser } from "@/app/redux/userSlice";
 import { Button, message } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const handleSubmit = (e: any) => {
+  const [login, {}] = useLoginMutation();
+  const route = useRouter();
+  const dispatch = useDispatch();
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setError("");
 
@@ -16,9 +23,31 @@ export default function Login() {
       setError("Please fill in all fields");
       return;
     }
-    message.success("Login success!");
     // Handle login logic here
-    console.log("Login attempt:", { email, password });
+    try {
+      const loginUser = await login({ email, password }).unwrap();
+      if (loginUser.success) {
+        message.success("Login successful!");
+        const data = loginUser.data;
+        dispatch(setUser(data.user));
+        dispatch(setToken(data.token));
+        localStorage.setItem("auth", data.token || null);
+        dispatch(
+          baseApi.util.invalidateTags([
+            "auth",
+            "assignment",
+            "course",
+            "module",
+            "quiz",
+            "video",
+          ])
+        );
+        return;
+        // return route.push("/auth/login");
+      }
+    } catch (error: any) {
+      return message.error(error.data.message || "Unknown error");
+    }
   };
 
   return (
@@ -40,6 +69,7 @@ export default function Login() {
               <input
                 type="email"
                 defaultValue={email}
+                suppressHydrationWarning
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
                 placeholder="you@example.com"
@@ -76,7 +106,10 @@ export default function Login() {
           </form>
 
           <div className="mt-4 text-center grid gap-3">
-            <Link href="#" className="text-sm text-slate-600 hover:text-slate-700">
+            <Link
+              href="#"
+              className="text-sm text-slate-600 hover:text-slate-700"
+            >
               Forgot password?
             </Link>
             <Link

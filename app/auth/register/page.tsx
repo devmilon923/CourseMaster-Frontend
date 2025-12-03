@@ -3,8 +3,12 @@ import { Button, message, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useState } from "react";
+import { useRegisterMutation } from "@/app/redux/api/call/authApi";
+import { Router } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  const [register, {}] = useRegisterMutation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,7 +19,7 @@ export default function Register() {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [error, setError] = useState("");
-
+  const route = useRouter();
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -36,7 +40,7 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setError("");
 
@@ -67,9 +71,23 @@ export default function Register() {
       setError("Please enter a valid phone number");
       return;
     }
-
-    message.success("Registration successful!");
-    console.log("Registration data:", { ...formData, image: imageFile });
+    const ParseForm = new FormData();
+    ParseForm.append("name", formData.name);
+    ParseForm.append("email", formData.email);
+    ParseForm.append("phone", formData.phone);
+    ParseForm.append("password", formData.password);
+    if (imageFile) {
+      ParseForm.append("image", imageFile);
+    }
+    try {
+      const create = await register(ParseForm).unwrap();
+      if (create.success) {
+        message.success("Registration successful! please login");
+        return route.push("/auth/login");
+      }
+    } catch (error: any) {
+      return message.error(error.data.data || "Unknown error");
+    }
   };
 
   return (
@@ -136,6 +154,7 @@ export default function Register() {
                 name="email"
                 type="email"
                 value={formData.email}
+                suppressHydrationWarning
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
                 placeholder="you@example.com"
