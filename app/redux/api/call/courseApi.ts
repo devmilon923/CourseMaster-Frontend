@@ -41,10 +41,54 @@ const courseApi = baseApi.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+
+    assignmentCheck: builder.query({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/isassignmented/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["module"],
+    }),
+
+    getCourseModule: builder.query({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/user/module/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["module"],
+    }),
+    getModuleVideos: builder.query({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/user/videos/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["video"],
+    }),
+    markVideoAsCompleted: builder.mutation({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/video/mark-completed/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["video"],
+    }),
+
+    markAssignmentCompleted: builder.mutation({
+      query: ({ link, id }: { id: any; link: string }) => ({
+        url: `/course/assignment/mark-completed/${id}`,
+        method: "PATCH",
+        body: { link },
+      }),
+      invalidatesTags: ["video"],
+    }),
   }),
 });
 export const {
   useGuestCoursesQuery,
   useCourseDetailsQuery,
   useEnrolledCheckQuery,
+  useGetCourseModuleQuery,
+  useGetModuleVideosQuery,
+  useMarkVideoAsCompletedMutation,
+  useMarkAssignmentCompletedMutation,
+  useAssignmentCheckQuery
 } = courseApi;
