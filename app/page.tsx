@@ -13,6 +13,7 @@ import {
 import Card from "./components/card";
 import CardSection from "./components/cardSection";
 import Link from "next/link";
+import Stats from "./components/stats";
 
 export default function Home() {
   // API Response Data for Courses Section
@@ -57,38 +58,28 @@ export default function Home() {
                 tools with curriculums designed by Fortune 500 experts.
               </p>
 
-              <div className="flex items-center sm:flex-row gap-4 mb-16">
-                <Button
-                  type="primary"
-                  size="large"
-                  className="h-14 px-8 text-base bg-gray-900! hover:bg-gray-800! border-none! rounded-lg shadow-xl transition-all hover:-translate-y-0.5"
-                >
-                  Explore Courses
-                </Button>
+              <div className="flex items-center sm:flex-row md:gap-4 gap-2 mb-16">
+                <Link href={"/course"}>
+                  <Button
+                    type="primary"
+                    size="large"
+                    className="h-14 px-8 text-sm! md:text-base bg-gray-900! hover:bg-gray-800! border-none! rounded-lg shadow-xl transition-all hover:-translate-y-0.5"
+                  >
+                    Explore Courses
+                  </Button>
+                </Link>
                 <div className="flex items-center gap-4 px-6 h-14 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors group">
                   <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Play className="h-4 w-4 text-red-600 fill-current" />
                   </div>
-                  <span className="font-medium text-gray-900">Watch Demo</span>
+                  <span className="font-medium text-sm text-gray-900">
+                    Watch Demo
+                  </span>
                 </div>
               </div>
 
               {/* Stats */}
-              <div className="flex gap-12 border-t border-gray-100 pt-8">
-                <div>
-                  <p className="text-3xl font-bold text-gray-900 tracking-tight">
-                    1.2k+
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">Total Courses</p>
-                </div>
-                <div className="w-px h-12 bg-gray-200"></div>
-                <div>
-                  <p className="text-3xl font-bold text-gray-900 tracking-tight">
-                    50k+
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">Total Students</p>
-                </div>
-              </div>
+              <Stats />
             </div>
 
             {/* Right Image */}

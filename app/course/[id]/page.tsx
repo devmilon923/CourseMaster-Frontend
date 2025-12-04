@@ -24,22 +24,8 @@ export default function Page() {
       day: "numeric",
     });
   };
-  console.log(authDetailsData?.data);
-  const handleEnroll = async () => {
-    if (user) {
-      if (authDetailsData?.data) {
-        console.log("already enrolled");
-        // return route.push("/auth/login");
-        return;
-      } else {
-        return route.push(`/course/enrollment/${course?._id}`);
-      }
-    } else {
-      return route.push("/auth/login");
-    }
-  };
   return (
-    <div className="min-h-screen bg-white pt-2">
+    <div className="min-h-screen bg-white pt-10">
       <div className="">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main Content */}
@@ -149,14 +135,26 @@ export default function Page() {
 
               {/* Enroll Button */}
               {user ? (
-                authDetailsData?.data ? (
+                authDetailsData?.data?.status === "accepted" ? (
                   <Link href={`/course/watch/${course?._id}`}>
-                    <button
-                      className="w-full bg-amber-600 cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-amber-800 transition-colors mb-6"
-                    >
+                    <button className="w-full bg-lime-600 cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-lime-700 transition-colors mb-6">
                       Continue Course
                     </button>
                   </Link>
+                ) : authDetailsData?.data?.status === "pending" ? (
+                  <button
+                    className="w-full bg-yellow-600 cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-yellow-700 transition-colors mb-6 disabled:opacity-50"
+                    disabled
+                  >
+                    Your request is pending
+                  </button>
+                ) : authDetailsData?.data?.status === "rejected" ? (
+                  <button
+                    className="w-full bg-red-600 cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-red-700 transition-colors mb-6 disabled:opacity-50"
+                    disabled
+                  >
+                    Your request was rejected
+                  </button>
                 ) : (
                   <Link href={`/course/enrollment/${course?._id}`}>
                     <button className="w-full bg-black cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-gray-800 transition-colors mb-6">

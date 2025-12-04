@@ -71,7 +71,14 @@ const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["video"],
     }),
-
+    sendEnrollRequest: builder.mutation({
+      query: ({ id, note }: { id: any; note: string }) => ({
+        url: `/course/enroll-request/${id}`,
+        method: "POST",
+        body: { additionalNote: note },
+      }),
+      invalidatesTags: ["course"],
+    }),
     markAssignmentCompleted: builder.mutation({
       query: ({ link, id }: { id: any; link: string }) => ({
         url: `/course/assignment/mark-completed/${id}`,
@@ -79,6 +86,48 @@ const courseApi = baseApi.injectEndpoints({
         body: { link },
       }),
       invalidatesTags: ["video"],
+    }),
+
+    getMyCourses: builder.query({
+      query: ({
+        page = 1,
+        limit = 10,
+        status,
+      }: {
+        page?: number;
+        limit?: number;
+        status?: string;
+      }) => ({
+        url: `/course//enroll-request`,
+        method: "GET",
+        params: { page, limit, status },
+      }),
+      providesTags: ["course"],
+    }),
+
+    getQuiz: builder.query({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/quiz/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["quiz"],
+    }),
+
+    submitQuiz: builder.mutation({
+      query: ({ id, answers }: { id: any; answers: [] }) => ({
+        url: `/course/quiz-submit/${id}`,
+        method: "POST",
+        body: { answers: [...answers] },
+      }),
+      invalidatesTags: ["quiz"],
+    }),
+
+    landingStacks: builder.query({
+      query: () => ({
+        url: `/course/stacks`,
+        method: "GET",
+      }),
+      providesTags: ["course"],
     }),
   }),
 });
@@ -90,5 +139,10 @@ export const {
   useGetModuleVideosQuery,
   useMarkVideoAsCompletedMutation,
   useMarkAssignmentCompletedMutation,
-  useAssignmentCheckQuery
+  useAssignmentCheckQuery,
+  useSendEnrollRequestMutation,
+  useGetMyCoursesQuery,
+  useGetQuizQuery,
+  useSubmitQuizMutation,
+  useLandingStacksQuery,
 } = courseApi;
