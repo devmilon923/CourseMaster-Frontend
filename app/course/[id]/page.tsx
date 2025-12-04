@@ -1,13 +1,21 @@
 "use client";
 import { Users, BookOpen, Calendar } from "lucide-react";
-import { useCourseDetailsQuery } from "../../redux/api/call/courseApi";
-import { useParams } from "next/navigation";
+import {
+  useEnrolledCheckQuery,
+  useCourseDetailsQuery,
+} from "../../redux/api/call/courseApi";
+import { useParams, useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import Link from "next/link";
 
 export default function Page() {
   const { id } = useParams();
   const { data } = useCourseDetailsQuery({ id });
+  const { data: authDetailsData } = useEnrolledCheckQuery({ id });
   const course = data?.data || {};
-const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
+  const route = useRouter();
+  const user = useSelector((state: any) => state.userSlice.user);
+  const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -16,7 +24,20 @@ const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
       day: "numeric",
     });
   };
-
+  console.log(authDetailsData?.data);
+  const handleEnroll = async () => {
+    if (user) {
+      if (authDetailsData?.data) {
+        console.log("already enrolled");
+        // return route.push("/auth/login");
+        return;
+      } else {
+        return route.push(`/course/enrollment/${course?._id}`);
+      }
+    } else {
+      return route.push("/auth/login");
+    }
+  };
   return (
     <div className="min-h-screen bg-white pt-2">
       <div className="">
@@ -26,7 +47,7 @@ const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
             {/* Course Image */}
             <div className="bg-gray-100 rounded-lg overflow-hidden mb-6">
               <img
-                src={imageBase+course.image}
+                src={imageBase + course.image}
                 alt={course.name}
                 className="w-full h-64 sm:h-80 lg:h-96 object-cover"
               />
@@ -127,9 +148,29 @@ const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
               </div>
 
               {/* Enroll Button */}
-              <button className="w-full bg-black cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-gray-800 transition-colors mb-6">
-                Enroll Now
-              </button>
+              {user ? (
+                authDetailsData?.data ? (
+                  <Link href={`/course/watch/${course?._id}`}>
+                    <button
+                      className="w-full bg-amber-600 cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-amber-800 transition-colors mb-6"
+                    >
+                      Continue Course
+                    </button>
+                  </Link>
+                ) : (
+                  <Link href={`/course/enrollment/${course?._id}`}>
+                    <button className="w-full bg-black cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-gray-800 transition-colors mb-6">
+                      Enroll Now
+                    </button>
+                  </Link>
+                )
+              ) : (
+                <Link href={"/auth/login"}>
+                  <button className="w-full bg-black cursor-pointer text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-gray-800 transition-colors mb-6">
+                    Get Started
+                  </button>
+                </Link>
+              )}
 
               {/* Course Includes */}
               <div className="pt-6">

@@ -29,11 +29,22 @@ const courseApi = baseApi.injectEndpoints({
     }),
     courseDetails: builder.query({
       query: ({ id }: { id: any }) => ({
-        url: `course/guest-details/${id}`,
+        url: `/course/guest-details/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["course"],
+    }),
+    enrolledCheck: builder.query({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/isenrolled/${id}`,
         method: "GET",
       }),
       providesTags: ["course"],
     }),
   }),
 });
-export const { useGuestCoursesQuery, useCourseDetailsQuery } = courseApi;
+export const {
+  useGuestCoursesQuery,
+  useCourseDetailsQuery,
+  useEnrolledCheckQuery,
+} = courseApi;
