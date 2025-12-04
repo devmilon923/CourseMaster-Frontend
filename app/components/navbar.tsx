@@ -2,7 +2,7 @@
 import { Button } from "antd";
 import { BookOpen, Menu } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { logout } from "../redux/userSlice";
@@ -14,7 +14,27 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
   const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
+
+  // Close profile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target as Node)
+      ) {
+        setProfileOpen(false);
+      }
+    };
+
+    if (profileOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [profileOpen]);
   const handleLogout = () => {
     try {
       dispatch(logout());
@@ -55,7 +75,7 @@ export default function Navbar() {
               </Link>
             ))}
             {user ? (
-              <div className="relative">
+              <div className="relative" ref={profileRef}>
                 <button
                   onClick={() => setProfileOpen((s) => !s)}
                   className="flex items-center gap-2 bg-white border border-gray-200 rounded-full p-1"
@@ -92,7 +112,11 @@ export default function Navbar() {
                       <Button
                         block
                         type="default"
-                        onClick={() => router.push("/dashboard")}
+                        className="hover:border-gray-200! hover:text-green-600!"
+                        onClick={() => {
+                          router.push("/dashboard");
+                          setProfileOpen(false);
+                        }}
                       >
                         Dashboard
                       </Button>
@@ -169,6 +193,7 @@ export default function Navbar() {
                 </div>
               </div>
               <Button
+                className=""
                 block
                 type="default"
                 onClick={() => router.push("/dashboard")}
