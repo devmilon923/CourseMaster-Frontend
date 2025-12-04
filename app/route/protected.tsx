@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { useAuth } from "../context/AuthState";
 
 const privateRoutes = ["/dashboard"];
-const publicAuthRoutes = ["/", "/auth"];
 
 export function ProtectedRouteWrapper({
   children,
