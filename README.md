@@ -8,8 +8,14 @@ Clone the repository, install dependencies, and start the app by running the fol
 
 ```bash
     git clone https://github.com/devmilon923/CourseMaster-Frontend.git
+```
+```bash
     cd CourseMaster-Frontend
+```
+```bash
     npm install
+```
+```bash
     npm start
 ```
 This will start the app locally on your machine.
