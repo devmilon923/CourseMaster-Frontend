@@ -12,6 +12,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     let token = null;
     token = localStorage.getItem("auth") || null;
     if (!token) {
+      // admin token
       token = localStorage.getItem("aauth") || null;
     }
     if (token) {
