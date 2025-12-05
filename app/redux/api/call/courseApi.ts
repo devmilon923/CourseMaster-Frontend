@@ -129,8 +129,44 @@ const courseApi = baseApi.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+
+    // Admin route===========
+    adminCourse: builder.query({
+      query: ({
+        page = 1,
+        limit = 10,
+        searchQ = "",
+        sort = "",
+        category = "",
+      }: {
+        page?: number;
+        limit?: number;
+        searchQ?: string;
+        sort?: "high" | "low" | "";
+        category?:
+          | "Web Development"
+          | "Graphic Design & Illustration"
+          | "Marketing & Sales"
+          | "Communication Skills"
+          | "";
+      }) => ({
+        url: "/course",
+        method: "GET",
+        params: { page, limit, searchQ, sort, category },
+      }),
+      providesTags: ["course"],
+    }),
+    changeCourseStatus: builder.mutation({
+      query: ({ id, body }: { id: any; body: any }) => ({
+        url: `/course/update/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["quiz"],
+    }),
   }),
 });
+
 export const {
   useGuestCoursesQuery,
   useCourseDetailsQuery,
@@ -145,4 +181,7 @@ export const {
   useGetQuizQuery,
   useSubmitQuizMutation,
   useLandingStacksQuery,
+  // admin export
+  useAdminCourseQuery,
+  useChangeCourseStatusMutation,
 } = courseApi;
