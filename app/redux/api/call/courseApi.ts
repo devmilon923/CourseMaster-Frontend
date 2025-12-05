@@ -196,6 +196,13 @@ const courseApi = baseApi.injectEndpoints({
       }),
       providesTags: ["module"],
     }),
+    videoAdminDetails: builder.query({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/video-details/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["video"],
+    }),
     editModuleAdminDetails: builder.mutation({
       query: ({ id, body }: { id: any; body: any }) => ({
         url: `/course/module-details/${id}`,
@@ -203,6 +210,14 @@ const courseApi = baseApi.injectEndpoints({
         body,
       }),
       invalidatesTags: ["module"],
+    }),
+    editVideoAdminDetails: builder.mutation({
+      query: ({ id, body }: { id: any; body: any }) => ({
+        url: `/course/video-details/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["video"],
     }),
     deleteCourse: builder.mutation({
       query: (id) => ({
@@ -219,12 +234,27 @@ const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["module"],
     }),
+    addVideo: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/course/add-video/${id}`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["video"],
+    }),
     getModules: builder.query({
       query: (id) => ({
         url: `/course/admin/module/${id}`,
         method: "GET",
       }),
       providesTags: ["module"],
+    }),
+    getVideos: builder.query({
+      query: ({ id }) => ({
+        url: `/course/admin/videos/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["video"],
     }),
   }),
 });
@@ -253,5 +283,9 @@ export const {
   useGetModulesQuery,
   useCreateModuleMutation,
   useModuleAdminDetailsQuery,
-  useEditModuleAdminDetailsMutation
+  useEditModuleAdminDetailsMutation,
+  useGetVideosQuery,
+  useAddVideoMutation,
+  useEditVideoAdminDetailsMutation,
+  useVideoAdminDetailsQuery,
 } = courseApi;

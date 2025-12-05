@@ -3,27 +3,29 @@
 import React, { useEffect } from "react";
 import { Form, Input, InputNumber, Button, message } from "antd";
 import {
-  useCreateModuleMutation,
   useEditModuleAdminDetailsMutation,
+  useEditVideoAdminDetailsMutation,
   useModuleAdminDetailsQuery,
+  useVideoAdminDetailsQuery,
 } from "@/app/redux/api/call/courseApi";
 import { useParams } from "next/navigation";
 
 const { TextArea } = Input;
 
-export default function EditModulePage() {
+export default function EditVideoPage() {
   const { id } = useParams();
-  const { data, isLoading: detailsGetLoading } = useModuleAdminDetailsQuery({
+  const { data, isLoading: detailsGetLoading } = useVideoAdminDetailsQuery({
     id,
   });
   const [form] = Form.useForm();
-  const [editModuleAdminDetails, { isLoading }] =
-    useEditModuleAdminDetailsMutation();
+  const [editVideoAdminDetails, { isLoading }] =
+    useEditVideoAdminDetailsMutation();
   useEffect(() => {
     form.setFieldsValue({
       name: data?.data?.name,
       orderBy: data?.data?.orderBy,
       description: data?.data?.description,
+      videoLink: data?.data?.videoLink,
     });
   }, [form, detailsGetLoading]);
   const onFinish = async (values: any) => {
@@ -34,15 +36,15 @@ export default function EditModulePage() {
     };
 
     try {
-      const result: any = await editModuleAdminDetails({ id, body });
+      const result: any = await editVideoAdminDetails({ id, body });
       if (result?.data?.success) {
-        message.success("Module updated");
+        message.success("Video updated");
         return;
       } else {
         return message.error(result?.error?.data?.message);
       }
     } catch (e) {
-      message.error("Failed to create module");
+      message.error("Failed to add video");
     }
   };
 
@@ -50,7 +52,7 @@ export default function EditModulePage() {
     <div className="flex items-center justify-center py-10">
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-          Edit Module
+          Edit Video Details
         </h1>
 
         <Form
@@ -61,9 +63,9 @@ export default function EditModulePage() {
         >
           {/* name */}
           <Form.Item
-            label="Module Name"
+            label="Video Name"
             name="name"
-            rules={[{ required: true, message: "Please enter module name" }]}
+            rules={[{ required: true, message: "Please enter video name" }]}
           >
             <Input placeholder="Orientation" />
           </Form.Item>
@@ -90,7 +92,14 @@ export default function EditModulePage() {
               placeholder="This is an normal module description"
             />
           </Form.Item>
-
+          {/* Link */}
+          <Form.Item
+            label="Video Link"
+            name="videoLink"
+            rules={[{ required: true, message: "Please enter video link" }]}
+          >
+            <Input placeholder="Update youtube video link" />
+          </Form.Item>
           <Form.Item>
             <Button
               loading={isLoading}
@@ -100,7 +109,7 @@ export default function EditModulePage() {
               className="mt-2 bg-black! hover:bg-slate-950!"
               block
             >
-              Update Module
+              Update Video
             </Button>
           </Form.Item>
         </Form>

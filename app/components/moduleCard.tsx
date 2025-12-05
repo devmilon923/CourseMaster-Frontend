@@ -5,6 +5,7 @@ import { Switch, Tag, Button } from "antd";
 import { Edit } from "lucide-react"; // or any icon library you use
 import { useRouter } from "next/navigation";
 import { useEditModuleAdminDetailsMutation } from "../redux/api/call/courseApi";
+import Link from "next/link";
 
 type ModuleType = {
   _id: string;
@@ -63,54 +64,60 @@ export default function ModuleCard({
   if (!module) return <div className="p-6">Loading module...</div>;
 
   return (
-    <div className="flex items-center justify-center mb-4">
-      <div className="w-full max-w-xl bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-gray-900">{module.name}</h1>
+    <Link href={`/admin/course/videos/${module?._id}`}>
+      <div className="flex items-center justify-center mb-4">
+        <div className="w-full max-w-xl bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-semibold text-gray-900">
+              {module.name}
+            </h1>
 
-          <div className="flex items-center gap-2">
-            {/* Edit icon button */}
-            <Button
-              type="text"
-              size="small"
-              onClick={handleEdit}
-              title="Edit module"
-              className="flex items-center"
-            >
-              <Edit className="w-4 h-4 text-yellow-600" />
-            </Button>
+            <div className="flex items-center gap-2">
+              {/* Edit icon button */}
+              <Button
+                type="text"
+                size="small"
+                onClick={handleEdit}
+                title="Edit module"
+                className="flex items-center"
+              >
+                <Edit className="w-4 h-4 text-yellow-600" />
+              </Button>
 
-            <Tag
-              color={status === "public" ? "green" : "red"}
-              className="capitalize"
-            >
-              {status}
-            </Tag>
-            <Switch
-              checked={status === "public"}
-              onChange={handleToggleStatus}
-              className={status === "public" ? "bg-green-500!" : "bg-gray-300!"}
-            />
+              <Tag
+                color={status === "public" ? "green" : "red"}
+                className="capitalize"
+              >
+                {status}
+              </Tag>
+              <Switch
+                checked={status === "public"}
+                onChange={handleToggleStatus}
+                className={
+                  status === "public" ? "bg-green-500!" : "bg-gray-300!"
+                }
+              />
+            </div>
           </div>
-        </div>
 
-        <p className="text-sm text-gray-600">{module.description}</p>
+          <p className="text-sm text-gray-600">{module.description}</p>
 
-        <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
-          <div>
-            <p className="font-medium">Order</p>
-            <p>#{module.orderBy}</p>
-          </div>
-          <div>
-            <p className="font-medium">Total videos</p>
-            <p>{module.totalVideoCount}</p>
-          </div>
-          <div>
-            <p className="font-medium">Created at</p>
-            <p>{formatDate(module.createdAt)}</p>
+          <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
+            <div>
+              <p className="font-medium">Order</p>
+              <p>#{module.orderBy}</p>
+            </div>
+            <div>
+              <p className="font-medium">Total videos</p>
+              <p>{module.totalVideoCount}</p>
+            </div>
+            <div>
+              <p className="font-medium">Created at</p>
+              <p>{formatDate(module.createdAt)}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

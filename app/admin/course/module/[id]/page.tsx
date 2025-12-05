@@ -2,6 +2,7 @@
 import ModuleCard from "@/app/components/moduleCard";
 import { useGetModulesQuery } from "@/app/redux/api/call/courseApi";
 import { Button } from "antd";
+import { Link } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 export default function page() {
