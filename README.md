@@ -6,10 +6,12 @@ CourseMaster is a web application designed to manage and take courses with featu
 
 Clone the repository, install dependencies, and start the app by running the following commands in your terminal:
 
-git clone https://github.com/devmilon923/CourseMaster-Frontend.git
-cd CourseMaster-Frontend
-npm install
-npm start
+```bash
+    git clone https://github.com/devmilon923/CourseMaster-Frontend.git
+    cd CourseMaster-Frontend
+    npm install
+    npm start
+```
 This will start the app locally on your machine.
 
 ## Environment Variables
