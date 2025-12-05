@@ -12,7 +12,10 @@ import {
   Space,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useEnrollRequestQuery } from "@/app/redux/api/call/courseApi";
+import {
+  useEnrollRequestQuery,
+  useUpdateEnrollStatusMutation,
+} from "@/app/redux/api/call/courseApi";
 import Image from "next/image";
 
 const { Option } = Select;
@@ -29,6 +32,8 @@ type EnrollItem = {
 };
 
 export default function Page() {
+  const [updateEnrollStatus, { isLoading: mutationLoading }] =
+    useUpdateEnrollStatusMutation();
   const [statusFilter, setStatusFilter] = useState<
     "pending" | "accepted" | "rejected"
   >("pending");
@@ -52,7 +57,7 @@ export default function Page() {
   ) => {
     try {
       // TODO: call your mutation here, e.g.
-      // await updateEnrollStatus({ id: item._id, status: newStatus }).unwrap();
+      await updateEnrollStatus({ id: item?._id, status: newStatus });
       message.success(`Request ${newStatus}`);
     } catch {
       message.error("Failed to update status");

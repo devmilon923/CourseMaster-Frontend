@@ -242,13 +242,13 @@ const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["video"],
     }),
-     updateEnrollStatus: builder.mutation({
-      query: ({ id, body }) => ({
+    updateEnrollStatus: builder.mutation({
+      query: ({ id, status }) => ({
         url: `/course/update/${id}`,
-        method: "POST",
-        body,
+        method: "PATCH",
+        body: { status: status },
       }),
-      invalidatesTags: ["video"],
+      invalidatesTags: ["request"],
     }),
     getModules: builder.query({
       query: (id) => ({
@@ -306,4 +306,5 @@ export const {
   useEditVideoAdminDetailsMutation,
   useVideoAdminDetailsQuery,
   useEnrollRequestQuery,
+  useUpdateEnrollStatusMutation,
 } = courseApi;
