@@ -4,7 +4,7 @@ CourseMaster is a web application designed to manage and take courses with featu
 
 ## Authentication
 
-[Admin Login](https://course-master-frontend-eosin.vercel.app/admin/login)
+[Admin Login](https://course-master-frontend-eosin.vercel.app/admin/login) ||
 [Student Login](https://course-master-frontend-eosin.vercel.app/auth/login)
 
 ### Admin default login credentials:
