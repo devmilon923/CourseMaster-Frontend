@@ -172,6 +172,29 @@ const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["course"],
     }),
+
+    editCourse: builder.mutation({
+      query: ({ id, body }: { id: any; body: any }) => ({
+        url: `/course/update/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["course"],
+    }),
+    courseAdminDetails: builder.query({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/details/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["course"],
+    }),
+    deleteCourse: builder.mutation({
+      query: (id) => ({
+        url: `/course/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["course"],
+    }),
   }),
 });
 
@@ -192,5 +215,8 @@ export const {
   // admin export
   useAdminCourseQuery,
   useChangeCourseStatusMutation,
-  useAddCourseMutation
+  useAddCourseMutation,
+  useEditCourseMutation,
+  useCourseAdminDetailsQuery,
+  useDeleteCourseMutation,
 } = courseApi;

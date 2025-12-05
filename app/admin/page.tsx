@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button, Pagination, Switch, Select, Input } from "antd";
-import Image from "next/image";
+import { Button, Pagination, Select, Input } from "antd";
 import { useAdminCourseQuery } from "../redux/api/call/courseApi";
 import AdminCard from "../components/adminCard";
 import Link from "next/link";
@@ -38,8 +37,6 @@ export default function Admin() {
       | "Communication Skills"
       | "",
   });
-
-  const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
 
   // Reset page to 1 when filters change
   useEffect(() => {
@@ -103,10 +100,10 @@ export default function Admin() {
         <div className="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Input
-              placeholder="Search courses..."
+              placeholder="Search course or instructor..."
               value={searchQ}
               onChange={(e) => setSearchQ(e.target.value)}
-              className="rounded-xl"
+              className="rounded-xl hover:border-gray-500!"
               prefix={<span className="mr-2">🔍</span>}
             />
 
@@ -114,9 +111,10 @@ export default function Admin() {
               placeholder="Category"
               value={category}
               onChange={setCategory}
-              className="rounded-xl"
+              className="rounded-xl hover:border-gray-500!"
               allowClear
             >
+              <Option value="">Select an category</Option>
               <Option value="Web Development">Web Development</Option>
               <Option value="Graphic Design & Illustration">
                 Graphic Design & Illustration
@@ -129,14 +127,18 @@ export default function Admin() {
               placeholder="Sort by price"
               value={sort}
               onChange={setSort}
-              className="rounded-xl"
+              className="rounded-xl hover:border-gray-500!"
               allowClear
             >
+              <Option value="">Sort by</Option>
               <Option value="high">Price: High to Low</Option>
               <Option value="low">Price: Low to High</Option>
             </Select>
 
-            <Button onClick={resetFilters} className="rounded-xl h-11">
+            <Button
+              onClick={resetFilters}
+              className="rounded-xl h-11 hover:border-gray-500! hover:text-gray-700!"
+            >
               Clear Filters
             </Button>
           </div>

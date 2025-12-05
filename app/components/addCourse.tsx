@@ -1,35 +1,44 @@
 "use client";
 import React, { useState } from "react";
-import { Input, Button, Upload, Form, InputNumber, message } from "antd";
+import {
+  Input,
+  Button,
+  Upload,
+  Form,
+  InputNumber,
+  message,
+  Select,
+} from "antd";
 import type { UploadProps } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useAddCourseMutation } from "../redux/api/call/courseApi";
 import { useRouter } from "next/navigation";
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 export default function CreateCoursePage() {
   const [fileList, setFileList] = useState<any[]>([]);
   const [addCourse, { isLoading }] = useAddCourseMutation();
+  const route = useRouter();
+
   const uploadProps: UploadProps = {
     beforeUpload: (file) => {
-      // allow only images
       const isImage = file.type.startsWith("image/");
       if (!isImage) {
         message.error("You can only upload image files");
         return Upload.LIST_IGNORE;
       }
-      // prevent auto-upload, keep file in state only
       return false;
     },
-    maxCount: 1, // only one file
-    accept: "image/*", // open dialog for images only
+    maxCount: 1,
+    accept: "image/*",
     fileList,
     onChange(info) {
-      setFileList(info.fileList.slice(-1)); // extra safety, keep last only
+      setFileList(info.fileList.slice(-1));
     },
   };
-  const route = useRouter();
+
   const onFinish = async (values: any) => {
     const formData = new FormData();
     formData.append("name", values.name);
@@ -41,9 +50,9 @@ export default function CreateCoursePage() {
     if (fileList[0]?.originFileObj) {
       formData.append("image", fileList[0].originFileObj);
     }
+
     try {
       const add: any = await addCourse(formData);
-      //  add.error.data.message
       if (add?.data?.success) {
         message.success("New course added");
         return route.push("/admin");
@@ -97,12 +106,20 @@ export default function CreateCoursePage() {
             <TextArea rows={4} placeholder="Nothing to say" />
           </Form.Item>
 
+          {/* category as Select */}
           <Form.Item
             label="Category"
             name="category"
-            rules={[{ required: true, message: "Please enter category" }]}
+            rules={[{ required: true, message: "Please select category" }]}
           >
-            <Input placeholder="Web Development" />
+            <Select placeholder="Select category">
+              <Option value="Web Development">Web Development</Option>
+              <Option value="Graphic Design & Illustration">
+                Graphic Design & Illustration
+              </Option>
+              <Option value="Marketing & Sales">Marketing & Sales</Option>
+              <Option value="Communication Skills">Communication Skills</Option>
+            </Select>
           </Form.Item>
 
           <Form.Item label="Course Thumbnail" required>

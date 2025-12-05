@@ -1,13 +1,19 @@
 import { message, Switch, Button } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
-import { useChangeCourseStatusMutation } from "../redux/api/call/courseApi";
+import {
+  useChangeCourseStatusMutation,
+  useDeleteCourseMutation,
+} from "../redux/api/call/courseApi";
 import { Users, BookOpen, Calendar, Edit, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function AdminCard({ course }: { course: any }) {
   const [changeCourseStatus, {}] = useChangeCourseStatusMutation();
+  const [deleteCourse, {}] = useDeleteCourseMutation();
   const [localStatus, setLocalStatus] = useState(course.status || "private");
-
+  const route = useRouter();
   const imageBase = process.env.NEXT_PUBLIC_Image_baseURL;
 
   const formatDate = (dateString: string) => {
@@ -31,13 +37,37 @@ export default function AdminCard({ course }: { course: any }) {
   };
 
   const handleEdit = () => {
-    // Logic for edit action. E.g., navigate to edit page or open modal
-    message.info(`Edit course: ${course.name}`);
+    return route.push(`/admin/edit-course/${course?._id}`);
   };
 
-  const handleDelete = () => {
-    // Logic for delete action. E.g., confirmation modal, API call
-    message.warning(`Delete course: ${course.name}`);
+  const handleDelete = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to continue?",
+      icon: "info",
+      confirmButtonText: "Yes, I want",
+      confirmButtonColor: "red",
+      showCancelButton: true,
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await deleteCourse(course?._id);
+      await Swal.fire({
+        title: "Course Deleted",
+        text: "This course is now deleted. Students can't access this course.",
+        icon: "success",
+        confirmButtonText: "Understand",
+      });
+    } catch (error) {
+      await Swal.fire({
+        title: "Delete failed",
+        text: "Something went wrong while deleting the course.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    }
   };
 
   return (
