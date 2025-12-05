@@ -242,6 +242,14 @@ const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["video"],
     }),
+     updateEnrollStatus: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/course/update/${id}`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["video"],
+    }),
     getModules: builder.query({
       query: (id) => ({
         url: `/course/admin/module/${id}`,
@@ -255,6 +263,15 @@ const courseApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["video"],
+    }),
+
+    enrollRequest: builder.query({
+      query: ({ status }) => ({
+        url: `/course/enroll-request`,
+        method: "GET",
+        params: { status },
+      }),
+      providesTags: ["request"],
     }),
   }),
 });
@@ -288,4 +305,5 @@ export const {
   useAddVideoMutation,
   useEditVideoAdminDetailsMutation,
   useVideoAdminDetailsQuery,
+  useEnrollRequestQuery,
 } = courseApi;

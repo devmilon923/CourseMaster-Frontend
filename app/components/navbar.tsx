@@ -65,6 +65,14 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-10">
+            {user?.role === "admin" && (
+              <Link
+                href={`/admin/enroll-request`}
+                className="text-sm font-medium text-yellow-600 hover:text-red-600 transition-colors tracking-wide"
+              >
+                Enroll Request
+              </Link>
+            )}
             {["Home", "Why Us", "Courses"].map((item) => (
               <Link
                 key={item}

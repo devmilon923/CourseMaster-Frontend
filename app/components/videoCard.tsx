@@ -2,7 +2,14 @@
 
 import React from "react";
 import { Button } from "antd";
-import { Edit } from "lucide-react";
+import {
+  Edit,
+  Gamepad2Icon,
+  ListCheckIcon,
+  ListChecks,
+  ShieldQuestion,
+  TestTube,
+} from "lucide-react"; // quiz icon
 import { useRouter } from "next/navigation";
 
 const formatDate = (dateString: string) =>
@@ -38,10 +45,11 @@ export default function VideoCard({ videoData }: { videoData: any }) {
     ? `https://www.youtube.com/embed/${videoId}`
     : undefined;
   const route = useRouter();
+
   return (
     <div className="flex items-center justify-center mb-4">
       <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
-        {/* Header: title + order + static edit icon */}
+        {/* Header: title + order + actions */}
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-wide text-gray-400">
@@ -52,16 +60,35 @@ export default function VideoCard({ videoData }: { videoData: any }) {
             </h2>
           </div>
 
-          <Button
-            onClick={() =>
-              route.push(`/admin/course/videos/edit-video/${videoData?._id}`)
-            }
-            type="text"
-            size="small"
-            className="flex items-center cursor-default"
-          >
-            <Edit className="w-5 h-5 text-yellow-500" />
-          </Button>
+          <div className="flex items-center gap-1">
+            {/* Quiz button */}
+            <Button
+              onClick={() =>
+                route.push(
+                  `/admin/course/videos/${videoData?._id}/quiz` // adjust path as you like
+                )
+              }
+              type="text"
+              size="small"
+              className="flex items-center"
+              title="Manage quiz"
+            >
+              <ListCheckIcon className="w-5 h-5 text-green-500" />
+            </Button>
+
+            {/* Edit button */}
+            <Button
+              onClick={() =>
+                route.push(`/admin/course/videos/edit-video/${videoData?._id}`)
+              }
+              type="text"
+              size="small"
+              className="flex items-center"
+              title="Edit video"
+            >
+              <Edit className="w-5 h-5 text-yellow-500" />
+            </Button>
+          </div>
         </div>
 
         {/* Description */}
