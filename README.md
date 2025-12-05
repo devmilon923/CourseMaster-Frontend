@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CourseMaster
 
-## Getting Started
+CourseMaster is a web application designed to manage and take courses with features like course enrollment, quizzes, assignments, and progress tracking, catering to admins, users, and guests.
 
-First, run the development server:
+## Installation and Running
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Clone the repository, install dependencies, and start the app by running the following commands in your terminal:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+git clone https://github.com/devmilon923/CourseMaster-Frontend.git
+cd CourseMaster-Frontend
+npm install
+npm start
+This will start the app locally on your machine.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses a public `.env` file. You **do not** need to add or configure any environment variables manually. Simply cloning the repo is enough to get started.
 
-## Learn More
+## API Documentation (Summary)
 
-To learn more about Next.js, take a look at the following resources:
+### Authentication
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Login
+- Register
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Admin Capabilities
 
-## Deploy on Vercel
+- View assignment submissions per module
+- Get quizzes by module
+- Update enrollment request status
+- View all courses
+- View details of a single course
+- Update course information
+- Change course status (private/public)
+- Add quizzes to a module
+- Add videos to a module
+- Create modules within courses
+- Create new courses
+- View enrollment requests
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Guest Capabilities
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Detailed course view (title, description, instructor, syllabus, price)
+- Searching by title or instructor
+- Sorting courses by price (low to high, high to low)
+- Filtering courses by category
+- View available courses with server-side pagination
+
+### User Capabilities
+
+- Submit quizzes
+- Submit assignments
+- Get quizzes by module
+- View modules with progress tracking (e.g., "40% Completed")
+- Mark videos as completed
+- Get module videos
+- View list of enrolled courses
+- Send enrollment requests
