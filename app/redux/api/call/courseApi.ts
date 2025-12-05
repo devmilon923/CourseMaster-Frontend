@@ -162,7 +162,15 @@ const courseApi = baseApi.injectEndpoints({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["quiz"],
+      invalidatesTags: ["course"],
+    }),
+    addCourse: builder.mutation({
+      query: (body) => ({
+        url: `/course/create`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["course"],
     }),
   }),
 });
@@ -184,4 +192,5 @@ export const {
   // admin export
   useAdminCourseQuery,
   useChangeCourseStatusMutation,
+  useAddCourseMutation
 } = courseApi;

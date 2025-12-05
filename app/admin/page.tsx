@@ -4,6 +4,7 @@ import { Button, Pagination, Switch, Select, Input } from "antd";
 import Image from "next/image";
 import { useAdminCourseQuery } from "../redux/api/call/courseApi";
 import AdminCard from "../components/adminCard";
+import Link from "next/link";
 
 const { Option } = Select;
 
@@ -67,33 +68,6 @@ export default function Admin() {
 
   const courses = localCourses.length > 0 ? localCourses : data?.data || [];
 
-  const handleTogglePublic = (id: string) => {
-    const updatedCourses = courses.map((course: any) =>
-      course._id === id
-        ? {
-            ...course,
-            localStatus: course.localStatus === "public" ? "private" : "public",
-          }
-        : course
-    );
-    setLocalCourses(updatedCourses);
-
-    // Log current status change
-    const course = courses.find((c: any) => c._id === id);
-    console.log(
-      `Course ${id} status changed to:`,
-      course?.localStatus === "public" ? "private" : "public"
-    );
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   const resetFilters = () => {
     setSearchQ("");
     setSort("");
@@ -114,9 +88,15 @@ export default function Admin() {
               Manage and organize your courses
             </p>
           </div>
-          <Button className="bg-slate-800 hover:bg-slate-900 text-white border-slate-400 rounded-full">
-            + Add New Course
-          </Button>
+          <Link href={"/admin/add-course"}>
+            <Button
+              size="large"
+              type="dashed"
+              className="bg-slate-800! hover:bg-slate-900! text-white! border-slate-400! rounded-full"
+            >
+              + Add New Course
+            </Button>
+          </Link>
         </div>
 
         {/* Filters */}
