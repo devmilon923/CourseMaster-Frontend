@@ -114,7 +114,11 @@ export default function Navbar() {
                         type="default"
                         className="hover:border-gray-200! hover:text-green-600!"
                         onClick={() => {
-                          router.push("/dashboard");
+                          if (user?.role === "admin") {
+                            router.push("/admin");
+                          } else if (user?.role === "user") {
+                            router.push("/dashboard");
+                          }
                           setProfileOpen(false);
                         }}
                       >

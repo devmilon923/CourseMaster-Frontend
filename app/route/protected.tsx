@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "../context/AuthState";
 
-const privateRoutes = ["/dashboard"];
+const userRoutes = ["/dashboard"];
+const adminRoutes = ["/admin/dashboard"];
 
 export function ProtectedRouteWrapper({
   children,
@@ -15,24 +16,32 @@ export function ProtectedRouteWrapper({
   const pathname = usePathname();
   const { loading } = useAuth();
 
-  const token =
+  const userToken =
     typeof window !== "undefined" ? localStorage.getItem("auth") : null;
-
+  const adminToken =
+    typeof window !== "undefined" ? localStorage.getItem("aauth") : null;
   useEffect(() => {
-    const isPrivate = privateRoutes.some((route) =>
+    const isUserRoute = userRoutes.some((route) => pathname?.startsWith(route));
+    const isAdminRoute = adminRoutes.some((route) =>
       pathname?.startsWith(route)
     );
     const isPublicAuth = pathname?.startsWith("/auth");
 
-    if (isPrivate && !token) {
+    if (isUserRoute && !userToken) {
       router.push("/auth/login");
       return;
     }
-
-    if (isPublicAuth && token) {
+    if (isAdminRoute && !adminToken) {
+      router.push("/auth/admin-login");
+      return;
+    }
+    if (isPublicAuth && userToken) {
       router.push("/dashboard");
     }
-  }, [pathname, router, token, loading]);
+    if (isPublicAuth && adminToken) {
+      router.push("/admin");
+    }
+  }, [pathname, router, userToken, adminToken, loading]);
 
   if (loading) {
     return <>Loading...</>;

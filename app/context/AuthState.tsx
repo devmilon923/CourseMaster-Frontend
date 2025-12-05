@@ -9,15 +9,19 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
-    const authToken = localStorage.getItem("auth") || null;
-    if (authToken) {
+    let token = null;
+    token = localStorage.getItem("auth") || null;
+    if (!token) {
+      token = localStorage.getItem("aauth") || null;
+    }
+    if (token) {
       const fetchUser = async () => {
         try {
           const result = await axios.get(
             `${process.env.NEXT_PUBLIC_baseURL}/auth/my-profile`,
             {
               headers: {
-                Authorization: `Bearer ${authToken}`,
+                Authorization: `Bearer ${token}`,
               },
             }
           );

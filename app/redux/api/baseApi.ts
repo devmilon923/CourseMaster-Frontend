@@ -5,7 +5,11 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_baseURL,
     prepareHeaders: async (headers) => {
-      const token = localStorage.getItem("auth") || null;
+      let token = null;
+      token = localStorage.getItem("auth") || null;
+      if (token) {
+        token = localStorage.getItem("aauth") || null;
+      }
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }

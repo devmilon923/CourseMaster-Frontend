@@ -21,6 +21,14 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["auth"],
     }),
+    adminLogin: builder.mutation({
+      query: (body) => ({
+        url: "/admin/admin-login",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["auth"],
+    }),
     profile: builder.query({
       query: () => ({
         url: "/auth/my-profile",
@@ -30,4 +38,9 @@ const authApi = baseApi.injectEndpoints({
     }),
   }),
 });
-export const { useLoginMutation, useRegisterMutation,useProfileQuery } = authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useProfileQuery,
+  useAdminLoginMutation,
+} = authApi;

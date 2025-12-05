@@ -1,6 +1,6 @@
 "use client";
 import { baseApi } from "@/app/redux/api/baseApi";
-import { useLoginMutation } from "@/app/redux/api/call/authApi";
+import { useAdminLoginMutation } from "@/app/redux/api/call/authApi";
 import { setToken, setUser } from "@/app/redux/userSlice";
 import { Button, message } from "antd";
 import Link from "next/link";
@@ -12,7 +12,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [login, {}] = useLoginMutation();
+  const [login, {}] = useAdminLoginMutation();
   const route = useRouter();
   const dispatch = useDispatch();
   const handleSubmit = async (e: any) => {
@@ -27,12 +27,13 @@ export default function Login() {
     try {
       const loginUser = await login({ email, password }).unwrap();
       if (loginUser.success) {
-        message.success("Login successful!");
+        message.success("Admin Login successful!");
         const data = loginUser.data;
         dispatch(setUser(data.user));
         dispatch(setToken(data.token));
-        localStorage.removeItem("aauth");
-        localStorage.setItem("auth", data.token || null);
+        localStorage.removeItem("auth");
+        localStorage.setItem("aauth", data.token || null);
+
         dispatch(
           baseApi.util.invalidateTags([
             "auth",
@@ -43,7 +44,7 @@ export default function Login() {
             "video",
           ])
         );
-        return route.push("/dashboard");
+        return route.push("/admin");
       }
     } catch (error: any) {
       return message.error(error.data.message || "Unknown error");
@@ -55,7 +56,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           <h1 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
-            Sign In
+            Admin Login
           </h1>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -111,12 +112,6 @@ export default function Login() {
               className="text-sm text-slate-600 hover:text-slate-700"
             >
               Forgot password?
-            </Link>
-            <Link
-              href="/auth/register"
-              className="text-xs hover:underline text-slate-800 hover:text-slate-700"
-            >
-              Register Now
             </Link>
           </div>
         </div>
