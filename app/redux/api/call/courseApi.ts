@@ -181,6 +181,7 @@ const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["course"],
     }),
+
     courseAdminDetails: builder.query({
       query: ({ id }: { id: any }) => ({
         url: `/course/details/${id}`,
@@ -188,12 +189,42 @@ const courseApi = baseApi.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+    moduleAdminDetails: builder.query({
+      query: ({ id }: { id: any }) => ({
+        url: `/course/module-details/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["module"],
+    }),
+    editModuleAdminDetails: builder.mutation({
+      query: ({ id, body }: { id: any; body: any }) => ({
+        url: `/course/module-details/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["module"],
+    }),
     deleteCourse: builder.mutation({
       query: (id) => ({
         url: `/course/delete/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["course"],
+    }),
+    createModule: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/course/add-module/${id}`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["module"],
+    }),
+    getModules: builder.query({
+      query: (id) => ({
+        url: `/course/admin/module/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["module"],
     }),
   }),
 });
@@ -219,4 +250,8 @@ export const {
   useEditCourseMutation,
   useCourseAdminDetailsQuery,
   useDeleteCourseMutation,
+  useGetModulesQuery,
+  useCreateModuleMutation,
+  useModuleAdminDetailsQuery,
+  useEditModuleAdminDetailsMutation
 } = courseApi;
